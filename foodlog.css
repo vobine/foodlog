@@ -1,0 +1,17 @@
+/* Food log style sheet. */
+
+.group {
+    background-color: red;
+}
+
+.label {
+    background-color: blue;
+}
+
+.selector {
+    background-color: green;
+}
+
+.entry {
+    background-color: black;
+}
