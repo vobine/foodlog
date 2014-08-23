@@ -10,5 +10,9 @@ function querySQL ($pdo, $sql, $parameters)
   $stmt = $pdo->prepare ($sql);
   if ($stmt && $stmt->execute ($parameters)) {
     // Success!
+  } else {
+    // Boom!
+    
+  }
 }
 ?>
