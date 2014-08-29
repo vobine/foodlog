@@ -2,6 +2,7 @@
 
 .group {
     background-color: red;
+    border-style: groove;
 }
 
 .label {
