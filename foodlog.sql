@@ -1,3 +1,5 @@
+USE foodlog;
+
 CREATE TABLE foodlog (
     id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
     INDEX	  (id),
