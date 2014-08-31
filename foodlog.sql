@@ -1,6 +1,6 @@
 USE food;
 
-CREATE TABLE foodtype (
+CREATE TABLE foodType (
     id	    	INT UNSIGNED NOT NULL AUTO_INCREMENT,
     INDEX	(id),
     PRIMARY KEY	(id),
@@ -11,13 +11,24 @@ CREATE TABLE foodtype (
     fullName	VARCHAR(80)
 );
 
-CREATE TABLE foodlog (
+INSERT INTO foodType
+    (id, nickName, fullName)
+    VALUES
+    (101, 'MF', 'Medifast meal'),
+    (102, 'H2O', 'Water'),
+    (103, 'Sup', 'Supplements'),
+    (104, 'Lean', 'Lean protein'),
+    (105, 'Grn', 'Green vegetables'),
+    (106, 'Ex', 'Exercise'),
+    (107, 'Off', 'Off-plan food');
+
+CREATE TABLE foodLog (
     id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
     INDEX	  (id),
     PRIMARY KEY   (id),
 
     atype	  INT UNSIGNED NOT NULL,
-    FOREIGN KEY	  (atype) REFERENCES foodtype (id),
+    FOREIGN KEY	  (atype) REFERENCES foodType (id),
     INDEX   	  (atype),
 
     btype	  VARCHAR(80),
