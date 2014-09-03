@@ -8,11 +8,16 @@ function newSQL ($user, $pwd)
 function querySQL ($pdo, $sql, $parameters)
 {
   $stmt = $pdo->prepare ($sql);
-  if ($stmt && $stmt->execute ($parameters)) {
-    // Success!
-  } else {
-    // Boom!
-    
+  if (!$stmt) {
+    // SQL or connection failure?
+    myBad ('Possible SQL error in: ' . $sql);
+  } elseif ($stmt->execute ($parameters)) {
+    // Server, maybe?
+    myBad ('Possible SQL server error on ' . $sql);
   }
+
+  // Success!
+  return $stmt;
 }
+
 ?>
