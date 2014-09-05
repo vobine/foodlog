@@ -5,7 +5,7 @@ function newSQL ($user, $pwd)
   return new PDO ('mysql:host=localhost;dbname=food', $user, $pwd);
 }
 
-function querySQL ($pdo, $sql, $parameters)
+function querySQL ($pdo, $sql, $parameters = array())
 {
   $stmt = $pdo->prepare ($sql);
   if (!$stmt) {
