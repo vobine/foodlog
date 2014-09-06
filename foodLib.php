@@ -17,7 +17,7 @@ function querySQL ($pdo, $sql, $parameters = array())
   if (! $stmt) {
     // SQL or connection failure?
     myBad ('Possible SQL error in: ' . $sql);
-  } elseif ($stmt->execute ($parameters)) {
+  } elseif ($! stmt->execute ($parameters)) {
     // Server, maybe?
     myBad ('Possible SQL server error on ' . $sql);
   }
