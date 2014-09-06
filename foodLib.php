@@ -1,14 +1,20 @@
 <?php
 
+/****************************************************************
+ * SQL database adapter
+ */
+
+// Initiate a connection
 function newSQL ($user, $pwd)
 {
   return new PDO ('mysql:host=localhost;dbname=food', $user, $pwd);
 }
 
+// Execute a query, return cursor
 function querySQL ($pdo, $sql, $parameters = array())
 {
   $stmt = $pdo->prepare ($sql);
-  if (!$stmt) {
+  if (! $stmt) {
     // SQL or connection failure?
     myBad ('Possible SQL error in: ' . $sql);
   } elseif ($stmt->execute ($parameters)) {
