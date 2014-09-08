@@ -14,7 +14,6 @@
 
 <?php
 require_once ('foodLib.php');
-require_once ('configure.php');
 
 $sql = newSQL (USER, PASSWORD);
 ?>
