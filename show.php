@@ -15,7 +15,7 @@
 <?php
 require_once ('foodLib.php');
 
-$sql = newSQL (USER, PASSWORD);
+$sql = newSQL ($CONF["USER"], $CONF["PWD"]);
 ?>
 
   <div class="group" id="recent" >
