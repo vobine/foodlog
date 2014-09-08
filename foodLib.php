@@ -1,6 +1,17 @@
 <?php
 
 /****************************************************************
+ * Error handling.
+ */
+
+function myBad ($errorString)
+{
+  die ($errorString . "\n");
+  require ("error.php");
+  exit;
+}
+
+/****************************************************************
  * Application configuration.
  *
  * Configuration file path is local, so we can find it.
