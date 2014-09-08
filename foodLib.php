@@ -10,6 +10,9 @@
 $confFile = "/etc/foodLog.conf";
 try {
   $conf = fopen ($confFile, "rt");
+  if (! $conf) {
+    myBad ("Cannot open application configuration file " . $confFile);
+  }
 } catch (Exception $e) {
   myBad ("Need a configuration file.");
 }
