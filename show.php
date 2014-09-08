@@ -21,11 +21,20 @@ $sql = newSQL ($CONF["USER"], $CONF["PWD"]);
   <div class="group" id="recent" >
     <ul>
 <?php
-$lately = querySQL ($sql, "SELECT *
-FROM foodLog 
-WHERE stamp > DATE_SUB(CURDATE(), INTERVAL 7 DAY)
-ORDER BY stamp");
+$lately = querySQL ($sql, "SELECT fl.stamp, ft.fullName, fl.btype
+FROM foodLog AS fl
+LEFT JOIN foodType AS ft
+ON fl.atype = ft.id
+WHERE fl.stamp > DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+ORDER BY fl.stamp DESC");
 
+$counter = 0;
+foreach ($lately->fetch (PDO::FETCH_ASSOC) as $row) {
+  printf ("<ul> %s %s %s </ul>\n",
+          $row["fl.stamp"],
+          $row["ft.fullName"],
+          $row["fl.btype"]);
+}
 ?>
     </ul>
   </div>
