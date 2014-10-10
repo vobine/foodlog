@@ -39,31 +39,31 @@ foreach ($lately->fetch (PDO::FETCH_ASSOC) as $row) {
     </ul>
   </div>
 
-  <form method="post" action="enter.php" >
+  <form id="input" action="add.php" method="post" >
 
   <div class="group" id="summary" >
     <input type="submit" class="selector"
-	   id="MF" value="MF"
+	   name="submit" id="MF" value="MF"
 	   title="Medifast meal" />
     <input type="submit" class="selector"
-	   id="H2O" value="H2O" title="Water" />
+	   name="submit" id="H2O" value="H2O" title="Water" />
     <input type="submit" class="selector"
-	   id="Sup" value="Sup" title="Medifast supplement(s)" />
+	   name="submit" id="Sup" value="Sup" title="Medifast supplement(s)" />
     <input type="submit" class="selector"
-	   id="Lean" value="Lean" title="Lean protein" />
+	   name="submit" id="Lean" value="Lean" title="Lean protein" />
     <input type="submit" class="selector"
-	   id="Grn" value="Grn" title="Green vegetables" />
+	   name="submit" id="Grn" value="Grn" title="Green vegetables" />
     <input type="submit" class="selector"
-	   id="Ex" value="Ex" title="Exercise" />
+	   name="submit" id="Ex" value="Ex" title="Exercise" />
     <input type="submit" class="selector"
-	   id="Off" value="Off" title="Off-plan food or other stuff" />
+	   name="submit" id="Off" value="Off" title="Off-plan food or other stuff" />
   </div>
 
-  <div class="group" id="entry" >
-    <label class="label" id="quaLabel" for="quaEntry" >Quantity:</label>
-    <input type="number" class="entry" id="quaEntry" size="2" />
-    <label class="label" id="noteLabel" for="noteEntry" >Note:</label>
-    <input type="text" class="entry" id="noteEntry" />
+  <div class="group" id="entryDiv" >
+    <label class="label" id="quaLabel" name="quaLabel" for="quaEntry" >Quantity:</label>
+    <input type="number" class="entry" id="quaEntry" name="quaEntry" size="2" />
+    <label class="label" id="noteLabel" name="noteLabel" for="noteEntry" >Note:</label>
+    <input type="text" class="entry" id="noteEntry" name="noteEntry" />
   </div>
   </form>
 
