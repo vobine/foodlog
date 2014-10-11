@@ -39,5 +39,9 @@ var_dump ($_REQUEST);
 ?>
 </pre>
 
+<div>
+<a href="show.php">More!</a> 
+</div>
+
 </body>
 </html>
