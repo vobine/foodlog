@@ -21,7 +21,7 @@ $sql = newSQL ($CONF["USER"], $CONF["PWD"]);
   <div class="group" id="recent" >
     <ul>
 <?php
-$lately = querySQL ($sql, "SELECT fl.stamp, ft.fullName, fl.quantity
+$lately = querySQL ($sql, "SELECT fl.stamp, ft.fullName, fl.quantity, fl.comment
 FROM foodLog AS fl
 LEFT JOIN foodType AS ft
 ON fl.atype = ft.id
@@ -30,10 +30,16 @@ ORDER BY fl.stamp DESC");
 
 $counter = 0;
 while ($row = $lately->fetch (PDO::FETCH_ASSOC)) {
-  printf ("<li> %s %s %s </li>\n",
+  if ($row["comment"] == "") {
+    $comment = "";
+  } else {
+    $comment = " (" . $row["comment"] . ")";
+  }
+  printf ("<li> %s %s %s%s</li>\n",
           $row["stamp"],
+          $row["quantity"],
           $row["fullName"],
-          $row["quantity"]);
+	  $comment);
 }
 ?>
     </ul>
