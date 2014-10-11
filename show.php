@@ -67,7 +67,13 @@ while ($row = $lately->fetch (PDO::FETCH_ASSOC)) {
 
   <div class="group" id="entryDiv" >
     <label class="label" id="quaLabel" name="quaLabel" for="quaEntry" >Quantity:</label>
-    <input type="number" class="entry" id="quaEntry" name="quaEntry" size="2" />
+    <input type="number"
+	   class="entry"
+	   id="quaEntry"
+	   name="quaEntry"
+	   size="2"
+	   value="1"
+	   autofocus />
     <label class="label" id="noteLabel" name="noteLabel" for="noteEntry" >Note:</label>
     <input type="text" class="entry" id="noteEntry" name="noteEntry" />
   </div>
