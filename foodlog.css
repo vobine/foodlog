@@ -1,20 +1,20 @@
 /* Food log style sheet. */
 
 .group {
-    background-color: red;
+    background-color: #ffc0c0;
     border-style: groove;
 }
 
 .label {
-    background-color: blue;
+    background-color: #c0c0ff;
 }
 
 .selector {
-    background-color: green;
+    background-color: #c0ffc0;
 }
 
 .entry {
-    background-color: black;
+    background-color: c0c0c0;
 }
 
 #quaEntry {
