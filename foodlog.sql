@@ -36,3 +36,13 @@ CREATE TABLE foodLog (
     quantity  	  INT UNSIGNED,
     comment	  VARCHAR(240)
 );
+
+CREATE TABLE weight (
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    INDEX         (id),
+    PRIMARY KEY   (id),
+
+    stamp         TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL;
+    weight        FLOAT,
+    note          VARCHAR(240)
+);
