@@ -28,8 +28,8 @@ ON fl.atype = ft.id
 WHERE fl.stamp > DATE_SUB(CURDATE(), INTERVAL 7 DAY)
 ORDER BY fl.stamp DESC");
 
-$counter = 0;
-while ($row = $lately->fetch (PDO::FETCH_ASSOC)) {
+$counter = 5;
+while (($row = $lately->fetch (PDO::FETCH_ASSOC)) && $counter > 0) {
   if ($row["comment"] == "") {
     $comment = "";
   } else {
@@ -40,6 +40,8 @@ while ($row = $lately->fetch (PDO::FETCH_ASSOC)) {
           $row["quantity"],
           $row["fullName"],
 	  $comment);
+
+  $counter--;
 }
 ?>
     </ul>
