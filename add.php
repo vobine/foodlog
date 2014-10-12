@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-
-<html>
-
-<head>
-
-  <title>Database Insertion for Food Log</title>
-</head>
-
 <?php
 require_once ('foodLib.php');
 
@@ -27,21 +18,36 @@ VALUES (?, ?, ?)",
 		    array ($type["id"],
 			   $_REQUEST["quaEntry"],
 			   $_REQUEST["noteEntry"]));
+
 ?>
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Database Insertion error for Food Log</title>
+</head>
 
 <body>
 
+<div>
+<a href="show.php">More!</a> 
+</div>
+
 <pre>
 <?php
+  var_dump ($sql->errorCode ());
+if ($sql->errorCode () != 0) {
+  var_dump ($sql->errorInfo ());
+} else {
+  echo "It worked!\n";
+}
   var_dump ($type);
 var_dump ($insert);
 var_dump ($_REQUEST);
 ?>
 </pre>
-
-<div>
-<a href="show.php">More!</a> 
-</div>
 
 </body>
 </html>
