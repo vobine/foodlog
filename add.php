@@ -2,7 +2,6 @@
 require_once ('foodLib.php');
 
 $sql = newSQL ($CONF["USER"], $CONF["PWD"]);
-var_dump ($sql);
 
 $typeQuery = querySQL ($sql,
 		       "SELECT *
@@ -19,6 +18,12 @@ VALUES (?, ?, ?)",
 			   $_REQUEST["quaEntry"],
 			   $_REQUEST["noteEntry"]));
 
+if ($sql->errorCode () == 0) {
+  // Insertion successful! No need to display the error cruft.
+  header ("HTTP/1.1: 303 See Other");
+  header ("Location: show.php");
+  die ();
+}
 ?>
 
 <!DOCTYPE html>
@@ -37,13 +42,9 @@ VALUES (?, ?, ?)",
 
 <pre>
 <?php
-  var_dump ($sql->errorCode ());
-if ($sql->errorCode () != 0) {
-  var_dump ($sql->errorInfo ());
-} else {
-  echo "It worked!\n";
-}
-  var_dump ($type);
+var_dump ($sql->errorCode ());
+var_dump ($sql->errorInfo ());
+var_dump ($type);
 var_dump ($insert);
 var_dump ($_REQUEST);
 ?>
