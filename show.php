@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 
+<?php
+require_once ('foodLib.php');
+
+$sql = newSQL ($CONF["USER"], $CONF["PWD"]);
+?>
+
 <html>
 <head>
 
@@ -11,12 +17,6 @@
 <body>
 
   <h1>UI Mockup for Food Log</h1>
-
-<?php
-require_once ('foodLib.php');
-
-$sql = newSQL ($CONF["USER"], $CONF["PWD"]);
-?>
 
   <div class="group" id="recent" >
     <ul>
