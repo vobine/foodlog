@@ -9,14 +9,12 @@ $sql = newSQL ($CONF["USER"], $CONF["PWD"]);
 <html>
 <head>
 
-  <title>UI Mockup For Food Log</title>
+  <title>HRP Food Log</title>
   <link rel="stylesheet" type="text/css" href="foodlog.css" >
 
 </head>
 
 <body>
-
-  <h1>UI Mockup for Food Log</h1>
 
   <div class="group" id="recent" >
     <ul>
