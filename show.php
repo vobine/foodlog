@@ -16,6 +16,7 @@ LEFT JOIN foodType AS ft
 ON fl.atype = ft.id
 WHERE fl.stamp > DATE_SUB(CURDATE(), INTERVAL 7 DAY)
 ORDER BY fl.stamp DESC";
+  global $sql;
   $lately = querySQL ($sql, $latelySQL);
 
   printf ("%s\n", "<ul>");
