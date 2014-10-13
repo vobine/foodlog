@@ -131,5 +131,24 @@ ORDER BY fl.stamp DESC";
     </table>
   </div>
 
+  <div class="group" id="weight" >
+    <form id="weightForm" action="weigh.php" method="post" >
+      <input type="number"
+	     class="entry"
+	     id="weightEntry"
+	     name="weightEntry"
+	     size="4"
+	     value="175.0" />
+      <input type="submit"
+	     class="selector"
+	     name="submit"
+	     id="weightSubmit"
+	     value="weight"
+	     title="What does the scale say today?" />
+      <label class="label" id="weightLabel" for="weightNote" >Notes:</label>
+      <input type="text" class="entry" id="weightNote" name="weightNote" />
+    </form>
+  </div>
+
 </body>
 </html>
