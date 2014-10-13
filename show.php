@@ -133,20 +133,21 @@ ORDER BY fl.stamp DESC";
 
   <div class="group" id="weight" >
     <form id="weightForm" action="weigh.php" method="post" >
+      <label class="label" id="weightValueLabel" for="weightEntry" >Weight:</label>
       <input type="number"
 	     class="entry"
 	     id="weightEntry"
 	     name="weightEntry"
 	     size="4"
 	     value="175.0" />
+      <label class="label" id="weightLabel" for="weightNote" >Notes:</label>
+      <input type="text" class="entry" id="weightNote" name="weightNote" />
       <input type="submit"
 	     class="selector"
 	     name="submit"
 	     id="weightSubmit"
 	     value="weight"
 	     title="What does the scale say today?" />
-      <label class="label" id="weightLabel" for="weightNote" >Notes:</label>
-      <input type="text" class="entry" id="weightNote" name="weightNote" />
     </form>
   </div>
 
