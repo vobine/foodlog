@@ -42,7 +42,7 @@ CREATE TABLE weight (
     INDEX         (id),
     PRIMARY KEY   (id),
 
-    stamp         TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL;
+    stamp         TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     weight        FLOAT,
     note          VARCHAR(240)
 );
