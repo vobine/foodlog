@@ -38,7 +38,7 @@ class User (Base, flask_login.UserMixin):
     __tablename__ = 'users'
 
     id = sql.Column (sql.Integer, primary_key=True)
-    name = sql.Column (sql.String (CHAR_LIMITS['name']))
+    name = sql.Column (sql.String (30))
     hashPass = sql.Column (sql.String (150), nullable=True)
 
     events = orm.relationship ('Event')
@@ -85,17 +85,35 @@ class Weight (Base):
         return '<Weight {0:d} at {1:s}: {2:f}>'.format (
             self.id, str (self.timestamp), self.weight)
 
+class Kind (Base):
+    """Event types"""
+    __tablename__ = 'kinds'
+
+    # Define columns
+    id = sql.Column (sql.String (4), primary_key=True)
+    name = sql.Column (sql.String (20), nullable=False)
+    notes = sql.Column (sql.Text, nullable=True)
+
+    events = orm.relationship ('FoodLog', back_populates='kind')
+
+    def __repr__ (self):
+        """Textual representation."""
+        return '<Event {0:s}>'.format (self.id)
+
 class FoodLog (Base):
     """Log an event."""
     __tablename__ = 'foodLog'
 
     # Define columns
     id = sql.Column (sql.Integer, primary_key=True)
-    kind = sql.Column (sql.Enum (EventTypes))
     quantity = sql.Column (sql.Float, nullable=True)
     unit = sql.Column (sql.Enum (_weightNames), nullable=True)
     timestamp = sql.Column (sql.DateTime (timezone=True),
                             default=dt.datetime.now ())
     note = sql.Column (sql.Text, nullable=True)
+
+    kind_id = sql.Column (sql.ForeignKey ('kinds.id'))
+    kind = orm.relationship ('Kind', back_populates='events')
+
     user_id = sql.Column (sql.ForeignKey ('users.id'))
     user = orm.relationship ('User', back_populates='events')
