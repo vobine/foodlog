@@ -140,6 +140,9 @@ def initialize_kinds (*args, **kwargs):
         Kind (id='Sup', name='Supplements'),
         Kind (id='Lean', name='Lean protein'),
         Kind (id='Grn', name='Green vegetables'),
+        Kind (id='L/G', name='Lean and/or green'),
         Kind (id='Ex', name='Exercise'),
-        Kind (id='Off', name='Off-plan food'), ] )
+        Kind (id='Off', name='Off-plan food'),
+        Kind (id='Fat', name='Healthy fat'),
+    ] )
     session.commit ()
