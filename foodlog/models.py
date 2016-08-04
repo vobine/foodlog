@@ -2,6 +2,7 @@ import datetime as dt
 import sqlalchemy as sql
 import sqlalchemy.orm as orm
 import sqlalchemy.ext.declarative as sqldcl
+import sqlalchemy.event as sqlevt
 from passlib.hash import bcrypt_sha256 as bcrypt
 import flask_login
 
@@ -41,7 +42,7 @@ class User (Base, flask_login.UserMixin):
     name = sql.Column (sql.String (30))
     hashPass = sql.Column (sql.String (150), nullable=True)
 
-    events = orm.relationship ('Event')
+    events = orm.relationship ('FoodLog')
     weights = orm.relationship ('Weight')
 
     def __init__ (self, name, password):
@@ -129,3 +130,16 @@ def init_db (url, verbose=False):
                           bind=engine))
     Base.query = session.query_property ()
     Base.metadata.create_all (bind=engine)
+
+@sqlevt.listens_for (Kind.__table__, 'after_create')
+def initialize_kinds (*args, **kwargs):
+    global session
+    session.add_all ( [
+        Kind (id='MF', name='Medifast meal'),
+        Kind (id='H2O', name='Water'),
+        Kind (id='Sup', name='Supplements'),
+        Kind (id='Lean', name='Lean protein'),
+        Kind (id='Grn', name='Green vegetables'),
+        Kind (id='Ex', name='Exercise'),
+        Kind (id='Off', name='Off-plan food'), ] )
+    session.commit ()
