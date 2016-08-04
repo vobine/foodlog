@@ -72,7 +72,7 @@ class Weight (Base):
     # Define columns
     id = sql.Column (sql.Integer, primary_key=True)
     weight = sql.Column (sql.Float, nullable=False)
-    unit = sql.Column (sql.Enum (_weightNames))
+    unit = sql.Column (sql.Enum (* _weightNames))
     timestamp = sql.Column (sql.DateTime (timezone=True),
                             nullable=False,
                             default=dt.datetime.now ())
@@ -107,7 +107,7 @@ class FoodLog (Base):
     # Define columns
     id = sql.Column (sql.Integer, primary_key=True)
     quantity = sql.Column (sql.Float, nullable=True)
-    unit = sql.Column (sql.Enum (_weightNames), nullable=True)
+    unit = sql.Column (sql.Enum (* _weightNames), nullable=True)
     timestamp = sql.Column (sql.DateTime (timezone=True),
                             default=dt.datetime.now ())
     note = sql.Column (sql.Text, nullable=True)
@@ -117,3 +117,15 @@ class FoodLog (Base):
 
     user_id = sql.Column (sql.ForeignKey ('users.id'))
     user = orm.relationship ('User', back_populates='events')
+
+
+def init_db (url, verbose=False):
+    """Initialize connection to database."""
+    global session
+    engine = sql.create_engine (url, echo=verbose)
+    session = orm.scoped_session (
+        orm.sessionmaker (autocommit=False,
+                          autoflush=False,
+                          bind=engine))
+    Base.query = session.query_property ()
+    Base.metadata.create_all (bind=engine)
