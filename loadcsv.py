@@ -18,8 +18,8 @@ categories = {
     'Weight': None,             # Weight is a different table.
 }
 
-def cvt (cFile, header=True):
-    """Load rows from a CSV file, insert into table."""
+def load (cFile, header=True):
+    """Load rows from a CSV file."""
     with open (cFile, 'rt') as cc:
         reader = enumerate (csv.reader (cc))
         if header:
@@ -33,19 +33,43 @@ def cvt (cFile, header=True):
                 print ('Unknown row type {0:d}: "{1:s}"'.format (i, row[1]))
                 return
             else:
-                yield (cat,
-                       dt.datetime.strptime (row[0], '%m/%d/%Y %H:%M:%S'),
-                       row[2])
+                yield [row[0], cat] + row[2:]
+
+def cvt (row):
+    """Convert a CSV row to internal format."""
+    timeStamp = dt.datetime.strptime (row[0], '%m/%d/%Y %H:%M:%S')
+    quantity = unit = None             # By default; exceptions below
+
+    # Special cases for column 2, the "what was it?"
+    if row[1] == "H2O":
+        # For water, it's usually a quantity in ounces
+        try:
+            quantity = int (row[2])
+            unit = 'floz'
+            row[2] = ''
+        except ValueError:
+            pass
+
+    elif row[1] == None:
+        # Weight quantities should be floating point
+        try:
+            quantity = float (row[2])
+            unit = 'lb'
+            row[2] = ''
+        except ValueError:
+            pass
+
+    # The result: [timeStamp, type, quantity, unit, *notes]
+    return [timeStamp, row[1], quantity, unit,
+            row[2].strip (), row[3].strip ()]
+
+def store (rows, dbms):
+    """For each of the incoming ROWS: convert, then store to DBMS."""
+    coo = coll.Counter (_[0] for _ in cvt (argv[0]))
 
 def main (argv):
     """CLI."""
     import collections as coll
-    coo = coll.Counter (_[0] for _ in cvt (argv[0]))
-    for k, v in coo.items ():
-        try:
-            print ('{0:5s} {1:d}'.format (k, v))
-        except TypeError:
-            print ('Weight {0:d}'.format (v))
 
 if __name__ == '__main__':
     from sys import argv
