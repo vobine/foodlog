@@ -27,21 +27,22 @@ def load (cFile, header=True):
             next (reader)
 
         for i, row in reader:
-            try:
-                cat = categories[row[1]]
-            except KeyError:
-                print ('Unknown row type {0:d}: "{1:s}"'.format (i, row[1]))
-                return
-            else:
-                yield [row[0], cat] + row[2:]
+            yield i, row
 
 def cvt (row):
     """Convert a CSV row to internal format."""
     timeStamp = dt.datetime.strptime (row[0], '%m/%d/%Y %H:%M:%S')
     quantity = unit = None             # By default; exceptions below
 
+    # Convert the row-type from Google Forms to FoodLog
+    try:
+        cat = categories[row[1]]
+    except KeyError:
+        print ('Unknown row type {0:d}: "{1:s}"'.format (i, row[1]))
+        return None
+
     # Special cases for column 2, the "what was it?"
-    if row[1] == "H2O":
+    if cat == "H2O":
         # For water, it's usually a quantity in ounces
         try:
             quantity = int (row[2])
@@ -50,7 +51,7 @@ def cvt (row):
         except ValueError:
             pass
 
-    elif row[1] == None:
+    elif cat == None:
         # Weight quantities should be floating point
         try:
             quantity = float (row[2])
@@ -60,7 +61,7 @@ def cvt (row):
             pass
 
     # The result: [timeStamp, type, quantity, unit, *notes]
-    return [timeStamp, row[1], quantity, unit,
+    return [timeStamp, cat, quantity, unit,
             row[2].strip (), row[3].strip ()]
 
 def store (rows, dbms):
