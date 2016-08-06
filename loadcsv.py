@@ -2,6 +2,7 @@
 
 import argparse
 import csv
+from itertools import chain, islice
 import datetime as dt
 import foodlog.models as flm
 
@@ -18,16 +19,23 @@ categories = {
     'Weight': None,             # Weight is a different table.
 }
 
-def load (cFile, header=True):
-    """Load rows from a CSV file."""
+def chunks (iterable, size):
+    """Split an iterable into bites of a fixed maximum size.
+From http://stackoverflow.com/a/24527424/1150562 retrieved 8/6/2016."""
+    iterator = iter (iterable)
+    for first in iterator:
+        yield chain ([first], islice (iterator, size-1))
+
+def load (cFile, header=True, size=100):
+    """Load chunks of rows from a CSV file."""
     with open (cFile, 'rt') as cc:
         reader = enumerate (csv.reader (cc))
         if header:
             # Ignore the first line, it's a header
             next (reader)
 
-        for i, row in reader:
-            yield i, row
+        for i, chunk in enumerate (chunks (reader, size)):
+            yield i, chunk
 
 def cvt (row):
     """Convert a CSV row to internal format."""
