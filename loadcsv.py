@@ -27,7 +27,9 @@ From http://stackoverflow.com/a/24527424/1150562 retrieved 8/6/2016."""
         yield chain ([first], islice (iterator, size-1))
 
 def load (cFile, header=True, size=100):
-    """Load chunks of rows from a CSV file."""
+    """Load chunks of rows from a CSV file.
+Yields a series of [chunk number, chunk generator] pairs.
+Each chunk generator yields at most SIZE rows."""
     with open (cFile, 'rt') as cc:
         reader = enumerate (csv.reader (cc))
         if header:
