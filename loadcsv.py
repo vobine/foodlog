@@ -74,9 +74,40 @@ def cvt (row):
     return [timeStamp, cat, quantity, unit,
             row[2].strip (), row[3].strip ()]
 
-def store (rows, dbms):
-    """For each of the incoming ROWS: convert, then store to DBMS."""
-    coo = coll.Counter (_[0] for _ in cvt (argv[0]))
+def store (row):
+    """Store one converted row to DBMS."""
+    if row[1]:
+        # It's a regular event
+        dbrow = flm.FoodLog (timestamp=row[0],
+                             kind=flm.session.query (flm.Kind) \
+                                  .filter_by (id=row[1]) \
+                                  .one (),
+                             quantity=row[2],
+                             unit=row[3])
+        # TBD: notes go here.
+    else:
+        # It's a weigh-in
+        dbrow = flm.Weight (timestamp=row[0],
+                            weight=row[2],
+                            unit=row[3])
+        # TBD: notes here.
+
+    flm.session.add (dbrow)
+
+def loadcsv (cfile, url, headers=True):
+    """Do the deed: load, convert, and store events."""
+    # Connect to database
+    flm.init_db (url)
+
+    # Open the import file
+    for cn, cc in load (cfile, headers):
+        # Load each chunk-o-rows
+        for rn, rr in cc:
+            # Convert and store each row
+            store (cvt (rr))
+
+        # That's a chunk, commit it.
+        flm.session.commit ()
 
 def main (argv):
     """CLI."""
