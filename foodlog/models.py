@@ -73,7 +73,6 @@ class Weight (Base):
     # Define columns
     id = sql.Column (sql.Integer, primary_key=True)
     weight = sql.Column (sql.Float, nullable=False)
-    unit = sql.Column (sql.Enum (* _weightNames))
     timestamp = sql.Column (sql.DateTime (timezone=True),
                             nullable=False,
                             default=dt.datetime.now ())
@@ -83,8 +82,8 @@ class Weight (Base):
 
     def __repr__ (self):
         """Text representation."""
-        return '<Weight {0:d} at {1:s}: {2:f}>'.format (
-            self.id, str (self.timestamp), self.weight)
+        return '<Weight {0:d} at {1:s}: {2:f} kilograms>'.format (
+            self.id, str (self.timestamp), self.weight / 1000)
 
 class Kind (Base):
     """Event types"""
@@ -105,13 +104,21 @@ class FoodLog (Base):
     """Log an event."""
     __tablename__ = 'foodLog'
 
+    # Define constants
+    units = dict (weight='grams', 
+                  volume='liters', 
+                  length='meters',
+                  count='count', 
+                  servings='count')
+    dimensions = frozenset (units.keys ())
+
     # Define columns
     id = sql.Column (sql.Integer, primary_key=True)
     quantity = sql.Column (sql.Float, nullable=True)
-    unit = sql.Column (sql.Enum (* _weightNames), nullable=True)
+    dimension = sql.Column (sql.Enum (* dimensions), nullable=True)
     timestamp = sql.Column (sql.DateTime (timezone=True),
                             default=dt.datetime.now ())
-    note = sql.Column (sql.Text, nullable=True)
+    notes = sql.Column (sql.Text, nullable=True)
 
     kind_id = sql.Column (sql.ForeignKey ('kinds.id'))
     kind = orm.relationship ('Kind', back_populates='events')

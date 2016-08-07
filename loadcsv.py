@@ -42,7 +42,7 @@ Each chunk generator yields at most SIZE rows."""
 def cvt (row):
     """Convert a CSV row to internal format."""
     timeStamp = dt.datetime.strptime (row[0], '%m/%d/%Y %H:%M:%S')
-    quantity = unit = None             # By default; exceptions below
+    quantity = dimension = None # By default; exceptions below
 
     # Convert the row-type from Google Forms to FoodLog
     try:
@@ -52,26 +52,26 @@ def cvt (row):
         return None
 
     # Special cases for column 2, the "what was it?"
-    if cat == "H2O":
-        # For water, it's usually a quantity in ounces
+    if cat == 'H2O':
+        # For water, it's usually a quantity in ounces. Convert to liters.
         try:
-            quantity = int (row[2])
-            unit = 'floz'
+            quantity = float (row[2]) / 33.814022701843
+            dimension = 'volume'
             row[2] = ''
         except ValueError:
             pass
 
     elif cat == None:
-        # Weight quantities should be floating point
+        # Weight quantities in pounds. Convert to grams
         try:
-            quantity = float (row[2])
-            unit = 'lb'
+            quantity = float (row[2]) / 0.002204622621848776
+            dimension = 'weight'
             row[2] = ''
         except ValueError:
             pass
 
-    # The result: [timeStamp, type, quantity, unit, *notes]
-    return [timeStamp, cat, quantity, unit,
+    # The result: [timeStamp, type, quantity, dimension, *notes]
+    return [timeStamp, cat, quantity, dimension,
             row[2].strip (), row[3].strip ()]
 
 def store (row):
@@ -83,13 +83,12 @@ def store (row):
                                   .filter_by (id=row[1]) \
                                   .one (),
                              quantity=row[2],
-                             unit=row[3])
+                             dimension=row[3])
         # TBD: notes go here.
     else:
         # It's a weigh-in
         dbrow = flm.Weight (timestamp=row[0],
-                            weight=row[2],
-                            unit=row[3])
+                            weight=row[2])
         # TBD: notes here.
 
     flm.session.add (dbrow)
