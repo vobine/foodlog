@@ -110,7 +110,30 @@ def loadcsv (cfile, url, headers=True):
 
 def main (argv):
     """CLI."""
-    import collections as coll
+
+    # Declare command line
+    parser = argparse.ArgumentParser (
+        'loadcsv: Load FoodLog database from Google Forms CSV.')
+    parser.add_argument ('--debug', '-d',
+                         action='store_true',
+                         help='More console output than you want to read')
+    parser.add_argument ('--quiet', '-q',
+                         action='store_true',
+                         help='Suppress console output unless fail')
+    parser.add_argument ('--headless',
+                         help='CSV file has no header row')
+    parser.add_argument ('infile',
+                         action='store',
+                         help='CSV file to import')
+    parser.add_argument ('dbms',
+                         action='store',
+                         help='URL for database')
+
+    # Parse command line
+    args = parser.parse_args (argv)
+
+    # Run
+    loadcsv (args.infile, args.dbms, headers=not args.headless)
 
 if __name__ == '__main__':
     from sys import argv
