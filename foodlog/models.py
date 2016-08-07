@@ -10,27 +10,36 @@ import flask_login
 Base = sqldcl.declarative_base ()
 
 # Unit juggling
-class WeightUnit:
-    """Give names to (too many!) units of weight."""
-    def __init__ (self, name, abbreviation, grams):
-        """A unit has a long and short name, and a canonical value in grams."""
+class Unit:
+    """Give names to (too many!) units."""
+    def __init__ (self, name, base, factor):
+        """A unit has a name and a conversion factor to a base unit
+(e.g., any weight unit can convert to or from grams)."""
         self.name = name
-        self.abbreviation = abbreviation
-        self.grams = grams
+        self.base = base
+        self.factor = factor
 
-    def fromGrams (self, grams):
-        """Convert a value in grams to this unit."""
-        return grams / self.grams
+    def fromBase (self, base):
+        """Convert a value in base to this unit."""
+        return base / self.factor
 
-    def toGrams (self, value):
-        """Convert a value in this unit to grams."""
-        return value * self.grams
+    def toBase (self, value):
+        """Convert a value in this unit to base."""
+        return value * self.factor
 
-_weights = dict (kg = WeightUnit ('kilogram', 'kg', 1000.0),
-                 g = WeightUnit ('gram', 'g', 1.0),
-                 st = WeightUnit ('stone', 'st', 6350.29318),
-                 lb = WeightUnit ('pound', 'lb', 453.59237))
-_weightNames = frozenset (w.abbreviation for w in _weights.values ())
+_units = dict (
+    # Mass/weight
+    g = Unit ('gram', 'g', 1.0),
+    kg = Unit ('kilogram', 'g', 1000.0),
+    st = Unit ('stone', 'g', 6350.29318),
+    lb = Unit ('pound', 'g', 453.59237),
+
+    # Volume
+    l = Unit ('liter', 'l', 1.0),
+    ml = Unit ('milliliter', 'l', 0.001),
+    floz = Unit ('fluid ounce', 'l', 33.814022701843),
+usg = Unit ('U.S. gallon', 'l', 
+_unitNames = frozenset (_units.keys ())
 
 # Table/class declarations
 
@@ -73,7 +82,7 @@ class Weight (Base):
     # Define columns
     id = sql.Column (sql.Integer, primary_key=True)
     weight = sql.Column (sql.Float, nullable=False)
-    unit = sql.Column (sql.Enum (* _weightNames))
+    unit = sql.Column (sql.Enum (* _unitNames))
     timestamp = sql.Column (sql.DateTime (timezone=True),
                             nullable=False,
                             default=dt.datetime.now ())
@@ -108,7 +117,7 @@ class FoodLog (Base):
     # Define columns
     id = sql.Column (sql.Integer, primary_key=True)
     quantity = sql.Column (sql.Float, nullable=True)
-    unit = sql.Column (sql.Enum (* _weightNames), nullable=True)
+    unit = sql.Column (sql.Enum (* _unitNames), nullable=True)
     timestamp = sql.Column (sql.DateTime (timezone=True),
                             default=dt.datetime.now ())
     note = sql.Column (sql.Text, nullable=True)
