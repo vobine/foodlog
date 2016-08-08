@@ -5,6 +5,7 @@ import csv
 from itertools import chain, islice
 import datetime as dt
 import foodlog.models as flm
+from sqlalchemy import func
 
 categories = {
     'Exercise': 'Ex',
@@ -107,6 +108,16 @@ def loadcsv (cfile, url, headers=True):
 
         # That's a chunk, commit it.
         flm.session.commit ()
+
+    # Summarize results
+    print ('Loaded {0:d} rows in {1:d} chunks:'.format (rn, cn))
+
+    for n, l in flm.session.query (func.count ('*'),
+                                   flm.FoodLog) \
+        .group_by (flm.FoodLog.kind_id) \
+        .order_by (flm.FoodLog.kind_id) \
+        .all ():
+        print ('    {0:4s} {1:5d}'.format (l.kind_id, n))
 
 def main (argv):
     """CLI."""
