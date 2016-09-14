@@ -1,2 +1,0 @@
-USER	SQL-user-name
-PWD	SQL-user-password
