@@ -75,3 +75,11 @@ def register ():
     # Sign in as new user
     flask_login.login_user (newid)
     return flask.render_template ('register.html')
+
+@app.route ('/logout')
+@flask_login.login_required
+def logout ():
+    """Disconnect the session."""
+    flask_login.logout_user ()
+    flask.flash ('You are now logged out.')
+    return flask.redirect (flask.url_for ('root'))
