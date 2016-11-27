@@ -1,6 +1,7 @@
 <!doctype html>
 <title>FoodLog (Flask edition)</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<link rel=stylesheet type=text/css 
+      href="{{ url_for ('static', filename='foodlog.css') }}" >
 <div class=page>
   <h1>Food log</h1>
   {% if current_user.is_authenticated %}
