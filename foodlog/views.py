@@ -68,7 +68,7 @@ def register ():
         'Check {0:s} for a temporary password (kidding!)'.format (user))
 
     # Store new user to the database
-    newid = models.JobOwner (user, password)
+    newid = models.User (user, password)
     models.session.add (newid)
     models.session.commit ()
 
