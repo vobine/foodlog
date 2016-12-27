@@ -6,6 +6,9 @@ import flask_login
 from . import app
 from . import models
 
+import sqlalchemy
+import datetime as dt
+
 # configuration
 DATABASE = 'sqlite:////tmp/foodlog.db'
 SECRET_KEY = 'TYd3QTCe4pRR41F3BPrnt6XE'
@@ -37,6 +40,23 @@ def shutdown_session (exception=None):
 def root ():
     """Root page: not much here."""
     return flask.render_template ('layout.html')
+
+@app.route ('/lately')
+@flask_login.login_required
+def lately ():
+    """Display the most recent day of entries."""
+    # Show all entries more recent than one day before the most recent.
+    earliest = models.session.query (
+        models.FoodLog,
+        sqlalchemy.func.max (models.FoodLog.timestamp)) \
+                             .one_or_none ()[0] \
+                             .timestamp \
+                             - dt.timedelta (days=1)
+
+    logs = models.session.query (models.FoodLog) \
+                         .filter (models.FoodLog.timestamp >= earliest)
+
+    return flask.render_template ('layout.html', logs=logs)
 
 @app.route ('/login', methods=['POST'])
 def login ():
