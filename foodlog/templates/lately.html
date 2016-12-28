@@ -12,7 +12,7 @@
     </tr>
     {% for log in logs %}
     <tr>
-      <td>{{ log.kind }}</td>
+      <td>{{ log.kind.name }}</td>
       <td>{{ log.quantity }} {{ log.dimension }}</td>
       <td>{{ log.notes }}</td>
       <td>{{ log.timestamp }}</td>
