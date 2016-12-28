@@ -54,7 +54,8 @@ def lately ():
                              - dt.timedelta (days=1)
 
     logs = models.session.query (models.FoodLog) \
-                         .filter (models.FoodLog.timestamp >= earliest)
+                         .filter (models.FoodLog.timestamp >= earliest) \
+                         .order_by (models.FoodLog.timestamp)
 
     return flask.render_template ('layout.html', logs=logs)
 
