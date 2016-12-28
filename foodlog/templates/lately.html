@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Recent Activity</h2>
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}
+  {% else %}
+  <table class='activity'>
+    <tr>
+      <th>What</th>
+      <th>Amount</th>
+      <th>Description</th>
+      <th>When</th>
+    </tr>
+    {% for log in logs %}
+    <tr>
+      <td>{{ log.kind }}</td>
+      <td>{{ log.quantity }} {{ log.dimension }}</td>
+      <td>{{ log.notes }}</td>
+      <td>{{ log.timestamp }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+{% endblock %}

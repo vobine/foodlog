@@ -57,7 +57,7 @@ def lately ():
                          .filter (models.FoodLog.timestamp >= earliest) \
                          .order_by (models.FoodLog.timestamp)
 
-    return flask.render_template ('layout.html', logs=logs)
+    return flask.render_template ('lately.html', logs=logs)
 
 @app.route ('/login', methods=['POST'])
 def login ():
