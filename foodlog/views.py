@@ -55,7 +55,8 @@ def lately ():
 
     logs = models.session.query (models.FoodLog) \
                          .filter (models.FoodLog.timestamp >= earliest) \
-                         .order_by (models.FoodLog.timestamp)
+                         .order_by (
+                             sqlalchemy.desc (models.FoodLog.timestamp))
 
     return flask.render_template ('lately.html', logs=logs)
 
