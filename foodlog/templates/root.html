@@ -7,15 +7,17 @@
     {{ log.kind.name }}, {{ log.quantity }} {{ log.dimension }}.
   </p>
 
-  <form action="{{ url_for ('root') }}" method="post">
+  <form action="{{ url_for ('add') }}" method="post">
     <h3>What</h3>
-      <p> {% for kind in kinds %}
-        {{ kind.name }}: <input type="radio" name="kind" value="{{ kind.id }}">
-        {% endfor %} </p>
+    <p> {% for kind in kinds %}
+      {{ kind.name }}: <input type="radio" name="kind" value="{{ kind.id }}">
+      {% endfor %} </p>
     <h3>How much</h3>
-      <p> <input type="number" name="quantity" /> </p>
+    <p> <input type="number" name="quantity" /> </p>
     <h3>Notes, if any</h3>
-      <p> <input type="text" name="note" /> </p>
+    <p> <input type="text" name="note" /> </p>
+    <h3>Go!</h3>
+    <p> <input type="submit" value="Submit" /> </p>
   </form>
 
   {% endif %}

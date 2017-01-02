@@ -69,6 +69,25 @@ def lately ():
 
     return flask.render_template ('lately.html', logs=logs)
 
+@app.route ('/add', methods=['POST'])
+@flask_login.login_required
+def add ():
+    """Add a new entry to the log."""
+    form = dict ()
+
+    # Interpret form values to match model, especially the defaults
+    form['kind_id'] = flask.request.form['kind']
+    if flask.request.form['quantity']:
+        form['quantity'] = flask.request.form['quantity']
+    if flask.request.form['note']:
+        form['notes'] = flask.request.form['note']
+
+    newlog = models.FoodLog (**form)
+    models.session.add (newlog)
+    models.session.commit ()
+
+    return flask.redirect (flask.url_for ('root'))
+
 @app.route ('/login', methods=['POST'])
 def login ():
     """Check credentials."""
