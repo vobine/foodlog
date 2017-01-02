@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Home</h2>
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}
+  {% else %}
+  <p>Most recent log at {{ log.timestamp }}:
+    {{ log.kind.name }}, {{ log.quantity }} {{ log.dimension }}.
+  </p>
+
+  <form action="{{ url_for ('root') }}" method="post">
+    <h3>What</h3>
+      <p> {% for kind in kinds %}
+        {{ kind.name }}: <input type="radio" name="kind" value="{{ kind.id }}">
+        {% endfor %} </p>
+    <h3>How much</h3>
+      <p> <input type="number" name="quantity" /> </p>
+    <h3>Notes, if any</h3>
+      <p> <input type="text" name="note" /> </p>
+  </form>
+
+  {% endif %}
+{% endblock %}
