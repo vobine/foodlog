@@ -57,11 +57,13 @@ def lately ():
     earliest = models.session.query (
         models.FoodLog,
         sqlalchemy.func.max (models.FoodLog.timestamp)) \
+                             .filter_by (user=flask_login.current_user) \
                              .one_or_none ()[0] \
                              .timestamp \
                              - dt.timedelta (days=1)
 
     logs = models.session.query (models.FoodLog) \
+                         .filter_by (user=flask_login.current_user) \
                          .filter (models.FoodLog.timestamp >= earliest) \
                          .order_by (
                              sqlalchemy.desc (models.FoodLog.timestamp)) \
