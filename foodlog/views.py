@@ -95,6 +95,35 @@ def add ():
 
     return flask.redirect (flask.url_for ('root'))
 
+@app.route ('/weight')
+@flask_login.login_required
+def weight ():
+    """Display the most recent entry."""
+    log = models.session.query (models.Weight) \
+                         .filter_by (user=flask_login.current_user) \
+                         .order_by (models.Weight.timestamp.desc ()) \
+                         .first ()
+
+    return flask.render_template ('weight.html', log=log)
+
+@app.route ('/weighin', methods=['POST'])
+@flask_login.login_required
+def weighin ():
+    """Add a new entry to the log."""
+    form = dict (user=flask_login.current_user)
+
+    # Interpret form values to match model, especially the defaults
+    if flask.request.form['value']:
+        form['weight'] = flask.request.form['value']
+    if flask.request.form['note']:
+        form['note'] = flask.request.form['note']
+
+    newlog = models.Weight (**form)
+    models.session.add (newlog)
+    models.session.commit ()
+
+    return flask.redirect (flask.url_for ('weight'))
+
 @app.route ('/login', methods=['POST'])
 def login ():
     """Check credentials."""
