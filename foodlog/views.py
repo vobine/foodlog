@@ -73,10 +73,10 @@ def lately ():
 @flask_login.login_required
 def add ():
     """Add a new entry to the log."""
-    form = dict ()
+    form = dict (kind_id=flask.request.form['kind'],
+                 user=flask_login.current_user)
 
     # Interpret form values to match model, especially the defaults
-    form['kind_id'] = flask.request.form['kind']
     if flask.request.form['quantity']:
         form['quantity'] = flask.request.form['quantity']
     if flask.request.form['note']:
