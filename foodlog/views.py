@@ -39,11 +39,16 @@ def shutdown_session (exception=None):
 @app.route ('/')
 def root ():
     """Root page."""
-    earliest = models.session.query (models.FoodLog) \
-               .order_by (models.FoodLog.timestamp.desc ()) \
-               .first ()
-    kinds = models.session.query (models.Kind) \
-            .order_by (models.Kind.name)
+    if flask_login.current_user.is_authenticated:
+        earliest = models.session.query (models.FoodLog) \
+                                 .filter_by (user=flask_login.current_user) \
+                                 .order_by (models.FoodLog.timestamp.desc ()) \
+                                 .first ()
+        kinds = models.session.query (models.Kind) \
+                              .order_by (models.Kind.name)
+
+    else:
+        earliest = kinds = None
 
     return flask.render_template ('root.html',
                                   log=earliest,
