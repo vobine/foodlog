@@ -12,7 +12,12 @@
   <form action="{{ url_for ('add') }}" method="post">
     <h3>What</h3>
     <p> {% for kind in kinds %}
-      {{ kind.name }}: <input type="radio" name="kind" value="{{ kind.id }}">
+      <span class="group">
+        <span class="label"> {{ kind.name }}: </span>
+        <span class="selector">
+          <input type="radio" name="kind" value="{{ kind.id }}">
+        </span>
+      </span>
       {% endfor %} </p>
     <h3>How much</h3>
     <p> <input type="number" name="quantity" /> </p>
