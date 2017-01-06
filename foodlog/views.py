@@ -46,13 +46,18 @@ def root ():
                                  .first ()
         kinds = models.session.query (models.Kind) \
                               .order_by (models.Kind.name)
+        weight = models.session.query (models.Weight) \
+                               .filter_by (user=flask_login.current_user) \
+                               .order_by (models.Weight.timestamp.desc ()) \
+                               .first ()
 
     else:
-        earliest = kinds = None
+        earliest = kinds = weight = None
 
     return flask.render_template ('root.html',
                                   log=earliest,
-                                  kinds=kinds)
+                                  kinds=kinds,
+                                  weight=weight)
 
 @app.route ('/lately')
 @flask_login.login_required
