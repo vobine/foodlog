@@ -15,6 +15,7 @@ categories = {
     'Lean and/or Green': 'L/G',
     'Medifast': 'MF',
     'Off plan': 'Off',
+    'Option': 'Opt',
     'Supplement': 'Sup',
     'Water': 'H2O',
     'Weight': None,             # Weight is a different table.
@@ -58,18 +59,21 @@ def cvt (row):
         try:
             quantity = float (row[2]) / 33.814022701843
             dimension = 'volume'
-            row[2] = ''
         except ValueError:
+            print ('Unknown water quantity {0:s}'.format (row[2]))
             pass
+        row[2] = ''
 
     elif cat == None:
         # Weight quantities in pounds. Convert to grams
         try:
             quantity = float (row[2]) / 0.002204622621848776
             dimension = 'weight'
-            row[2] = ''
         except ValueError:
+            print ('Unknown weight value {0:s}'.format (row[2]));
+            quantity = 0.0
             pass
+        row[2] = ''
 
     # The result: [timeStamp, type, quantity, dimension, *notes]
     return [timeStamp, cat, quantity, dimension,
