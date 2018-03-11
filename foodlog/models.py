@@ -151,5 +151,6 @@ def initialize_kinds (*args, **kwargs):
         Kind (id='Ex', name='Exercise'),
         Kind (id='Off', name='Off-plan food'),
         Kind (id='Fat', name='Healthy fat'),
+        Kind (id='Opt', name='Option/snack'),
     ] )
     session.commit ()
