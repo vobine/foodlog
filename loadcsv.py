@@ -79,7 +79,7 @@ def cvt (row):
     return [timeStamp, cat, quantity, dimension,
             row[2].strip (), row[3].strip ()]
 
-def store (row):
+def store (row, user):
     """Store one converted row to DBMS."""
     if row[1]:
         # It's a regular event
@@ -88,17 +88,19 @@ def store (row):
                                   .filter_by (id=row[1]) \
                                   .one (),
                              quantity=row[2],
-                             dimension=row[3])
+                             dimension=row[3],
+                             user_id=user)
         # TBD: notes go here.
     else:
         # It's a weigh-in
         dbrow = flm.Weight (timestamp=row[0],
-                            weight=row[2])
+                            weight=row[2],
+                            user_id=user)
         # TBD: notes here.
 
     flm.session.add (dbrow)
 
-def loadcsv (cfile, url, headers=True):
+def loadcsv (cfile, url, user, headers=True):
     """Do the deed: load, convert, and store events."""
     # Connect to database
     flm.init_db (url)
@@ -108,7 +110,7 @@ def loadcsv (cfile, url, headers=True):
         # Load each chunk-o-rows
         for rn, rr in cc:
             # Convert and store each row
-            store (cvt (rr))
+            store (cvt (rr), user)
 
         # That's a chunk, commit it.
         flm.session.commit ()
@@ -136,7 +138,13 @@ def main (argv):
                          action='store_true',
                          help='Suppress console output unless fail')
     parser.add_argument ('--headless',
+                         action='store_true',
                          help='CSV file has no header row')
+    parser.add_argument ('--user', '-u',
+                         action='store',
+                         type=int,
+                         default=0,
+                         help='FoodLog user name or ID for the new data')
     parser.add_argument ('infile',
                          action='store',
                          help='CSV file to import')
@@ -148,7 +156,7 @@ def main (argv):
     args = parser.parse_args (argv)
 
     # Run
-    loadcsv (args.infile, args.dbms, headers=not args.headless)
+    loadcsv (args.infile, args.dbms, args.user, headers=not args.headless)
 
 if __name__ == '__main__':
     from sys import argv
