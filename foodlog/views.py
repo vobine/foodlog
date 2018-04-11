@@ -1,5 +1,7 @@
 import string
 import random
+import datetime as dt
+import collections as coll
 
 import flask
 import flask_login
@@ -7,7 +9,6 @@ from . import app
 from . import models
 
 import sqlalchemy
-import datetime as dt
 
 # configuration
 DATABASE = 'sqlite:////tmp/foodlog.db'
@@ -58,6 +59,35 @@ def root ():
                                   log=earliest,
                                   kinds=kinds,
                                   weight=weight)
+
+@app.route ('/today')
+@flask_login.login_required
+def today ():
+    """Display activity summary for the current day."""
+    logs = models.session.query (models.FoodLog) \
+                         .filter_by (user=flask_login.current_user) \
+                         .filter (models.FoodLog.timestamp >= dt.date.today ()) \
+                         .join (models.Kind)
+    for log in logs:
+        print (log)
+
+    return flask.render_template ('lately.html', logs=logs)
+
+@app.route('/weekly')
+@flask_login.login_required
+def weekly ():
+    """Display activity summary for the past week."""
+    begin = dt.date.today () - dt.timedelta (days=8)
+    logs = models.session.query (models.FoodLog) \
+                         .filter_by (user=flask_login.current_user) \
+                         .filter (models.FoodLog.timestamp >= begin) \
+                         .join (models.Kind)
+    days = coll.defaultdict (coll.Counter)
+    for log in logs:
+        days[log.timestamp.date ()][log.kind.name] += 1
+
+    return flask.render_template ('weekly.html', days=days)
+
 
 @app.route ('/lately')
 @flask_login.login_required

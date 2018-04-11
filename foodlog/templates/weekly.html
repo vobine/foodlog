@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>This Week</h2>
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}
+  {% else %}
+    {% for day, stuff in days.items () %}
+      <p>{{ day.strftime ('%a') }} {{ day }}:
+        {% for item, n in stuff.items () %}
+          {{ n }} {{ item }},
+        {% endfor %}
+    {% endfor %}
+  {% endif %}
+{% endblock %}
