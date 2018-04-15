@@ -1,13 +1,21 @@
 {% extends "layout.html" %}
 {% block body %}
   <h2>Home</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}</p>
+  {% else %}
+  {% if log == none %}
+  <p class=error>No recent entries</p>
   {% else %}
   <p>Most recent log at {{ log.timestamp }}:
     {{ log.kind.name }}, {{ log.quantity }} {{ log.dimension }}.
   </p>
+  {% endif %}
+  {% if weight == none %}
+  <p class=error>No recent weigh-ins</p>
+  {% else %}
   <p>Latest weight {{ weight.weight }} at {{ weight.timestamp }}.
   </p>
+  {% endif %}
 
   <form action="{{ url_for ('add') }}" method="post">
     <h3>What</h3>

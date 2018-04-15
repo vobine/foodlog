@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
   <h2>Recent Activity</h2>
-  {% if error %}<p class=error><strong>Error:</strong> {{ error }}
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}</p>
+  {% elif logs == none %}<p class=error>No recent activity</p>
   {% else %}
   <table class='activity'>
     <tr>

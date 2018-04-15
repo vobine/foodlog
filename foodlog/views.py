@@ -98,16 +98,18 @@ def lately ():
         models.FoodLog,
         sqlalchemy.func.max (models.FoodLog.timestamp)) \
                              .filter_by (user=flask_login.current_user) \
-                             .one_or_none ()[0] \
-                             .timestamp \
-                             - dt.timedelta (days=1)
+                             .one_or_none ()
+    if earliest is None or len (earliest) == 0 or earliest[0] is None:
+        logs = None
+    else:
+        earliest = earliest[0].timestamp - dt.timedelta (days=1)
 
-    logs = models.session.query (models.FoodLog) \
-                         .filter_by (user=flask_login.current_user) \
-                         .filter (models.FoodLog.timestamp >= earliest) \
-                         .order_by (
-                             sqlalchemy.desc (models.FoodLog.timestamp)) \
-                         .join (models.Kind)
+        logs = models.session.query (models.FoodLog) \
+                             .filter_by (user=flask_login.current_user) \
+                             .filter (models.FoodLog.timestamp >= earliest) \
+                             .order_by (
+                                 sqlalchemy.desc (models.FoodLog.timestamp)) \
+                             .join (models.Kind)
 
     return flask.render_template ('lately.html', logs=logs)
 
