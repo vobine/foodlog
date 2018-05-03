@@ -73,7 +73,7 @@ def today ():
 
     return flask.render_template ('lately.html', logs=logs)
 
-@app.route('/weekly')
+@app.route ('/weekly')
 @flask_login.login_required
 def weekly ():
     """Display activity summary for the past week."""
@@ -206,3 +206,20 @@ def logout ():
     flask_login.logout_user ()
     flask.flash ('You are now logged out.')
     return flask.redirect (flask.url_for ('root'))
+
+@app.route ('/account')
+@flask_login.login_required
+def account ():
+    """Display and edit user account."""
+    return flask.render_template ('account.html')
+
+@app.route ('/reaccount', methods=['POST'])
+@flask_login.login_required
+def reaccount ():
+    """Process changes to user account."""
+    # Check credentials
+    oldpass = flask.request_form['op?']
+    nickname = flask.request_form['nick?']
+
+    # Display the result
+    return account ()

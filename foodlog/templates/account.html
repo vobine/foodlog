@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h2>Registration</h2>
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}
+  {% else %}
+    <h2>Account twiddling for {{ username }}.</h2>
+  <p>
+    <form action="{{ url_for ('reaccount') }}" method=post>
+      <dl>
+        <dt>Nickname:</dt>
+        <dd> <input type=text name=nickname value={{ nickname }}> </dd>
+        <dt>Units:</dt>
+        <dd>
+          <span class="group">
+            <span class="label">Metric</span>
+            <span class="selector">
+              <input type="radio" name="units" value="metric">
+            </span>
+          </span>
+          <span class="group">
+            <span class="label">English</span>
+            <span class="selector">
+              <input type="radio" name="units" value="english">
+            </span>
+          </span>
+        </dd>
+        <dt>New password:</dt>
+        <dd> <input type=password name=newpassword> </dd>
+        <dt>Current password:</dt>
+        <dd> <input type=password name=oldpassword> (required to make changes) </dd>
+        <dt>Submit:</dt>
+        <dd> <input type=submit value="login"> </dd>
+      </dl>
+    </form>
+  </p>
+  {% endif %}
+{% endblock %}
