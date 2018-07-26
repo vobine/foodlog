@@ -13,6 +13,10 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/vobine/foodlog",
     packages=setuptools.find_packages(),
+    include_package_data=True,
+    install_requires=(
+        "Flask",
+    ),
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: ",
