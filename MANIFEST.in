@@ -1,0 +1,9 @@
+include LICENSE
+include foodlog/static/foodlog.css
+include foodlog/templates/account.html
+include foodlog/templates/lately.html
+include foodlog/templates/layout.html
+include foodlog/templates/register.html
+include foodlog/templates/root.html
+include foodlog/templates/weekly.html
+include foodlog/templates/weight.html
