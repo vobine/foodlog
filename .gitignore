@@ -6,3 +6,6 @@ __pycache__
 .DS_Store
 nohup.out
 tmp
+build
+dist
+foodlog.egg-info
